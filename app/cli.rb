@@ -1,18 +1,53 @@
+class CLI
+
+  def initialize
+    @prompt = TTY::Prompt.new
+  end
+
   def find_or_create_user
     email = @prompt.ask("What's your email?")
-    @user = User.find_or_create(email: email)
+    @user = User.find_or_create_by(email: email)
   end
 
   def welcome
     puts "Welcome, your score will be saved to #{@user.email}. Let's start playing!"
   end
-  #
-  # def play
-  #   country = Country.all.sample
-  #   category = Category.all.sample
-  #   question = "#{category.text} #{country.name}?"
-  #   answer
 
-  # def create_countries
-  #   COUNTRIES_ARRAY.each {|country| Country.create(name:country[:name], code: country[:code])}
+  def formulate_question
+    country = Country.all.sample
+    category = Category.all.sample
+    question = "#{category.text} #{country.name}?"
+    puts question
   # end
+
+  # def get_answer
+
+    response_string = RestClient.get("https://restcountries.eu/rest/v2/alpha/#{country.code}")
+    country_info = JSON.parse(response_string)
+
+    if category.name == "capital"
+      answer = country_info["capital"]
+    elsif category.name == "currency"
+      answer = country_info["currencies"][0]["name"]
+    else
+      answer = country_info["languages"][0]["name"]
+    end
+  #
+  # end
+  #
+  # def answer_question
+    guess = gets.chomp
+    if guess == answer
+      puts "you won"
+      Question.create(user_id: @user.id, category_id: category.id, country_id: country.id)
+    else
+      puts "you lost"
+    end
+  end
+
+  def run
+    find_or_create_user
+    welcome
+    formulate_question
+  end
+end
