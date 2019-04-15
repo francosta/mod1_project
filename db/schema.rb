@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_131433) do
+ActiveRecord::Schema.define(version: 2019_04_15_135605) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "text"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.integer "level"
+    t.string "code"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "country_id"
+    t.string "question"
+    t.integer "category_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
