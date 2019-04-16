@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_15_135605) do
+ActiveRecord::Schema.define(version: 2019_04_16_103023) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_04_15_135605) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.integer "points", default: 0
+    t.text "available_questions"
   end
 
 end

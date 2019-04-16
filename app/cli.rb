@@ -16,10 +16,6 @@ class CLI
 
   def formulate_question
 
-    available_questions = {}
-    Category.all.map do |category|
-      available_questions = {category.name => Country.all.map {|c| c.name}}
-    end
 
     country = Country.all.sample
     category = Category.all.sample
