@@ -22,7 +22,7 @@ class CLI
   elsif choice == "Check Scoreboard"
     puts "Feature coming soon"
   elsif choice == "Account Management"
-    puts "Feature coming soon"
+    manage_account
   end
 
   end
@@ -92,30 +92,40 @@ class CLI
     end
   end
 
-#   def manage_account
-#
-#     choice = @prompt.select("Please choose from the following options:") do |menu|
-#       menu.choice 'Change my name'
-#       menu.choice 'Change my password'
-#       menu.choice 'Delete my account'
-#       menu.choice "Back to Main Menu"
-#     end
-#
-#   if choice == "Change my name"
-#     new_name =
-#
-#     email = @prompt.ask("What's your email?")
-#     @user = User.find_or_create_by(email: email)
-#
-#   elsif choice == "Play"
-#     find_or_create_user
-#   elsif choice == "Check Scoreboard"
-#     puts "Feature coming soon"
-#   elsif choice == "Account Management"
-#     puts "Feature coming soon"
-#   end
-#
-# end
+  def manage_account
+
+    choice = @prompt.select("Please choose from the following options:") do |menu|
+      menu.choice 'Change my name'
+      menu.choice 'Change my password'
+      menu.choice 'Delete my account'
+      menu.choice "Back to Main Menu"
+    end
+
+  if choice == "Change my name"
+    email = @prompt.ask("What's your email?")
+    @user = User.find_by(email: email)
+    new_name = @prompt.ask("What's your name?")
+    @user.name = new_name
+    @user.save
+    puts "Welcome, #{new_name}"
+    manage_account
+  # elsif choice == "Change my password"
+  #   new_password = @prompt.ask("Please set a new password:")
+  #   @user.password = new_password
+  #   puts "Your password has been changed."
+  elsif choice == "Delete my account"
+    if @prompt.yes?("Are you sure you want to delete your account. ALL YOUR POINTS AND PROGRESS WILL BE LOST!")
+      email = @prompt.ask("What's your email?")
+      @user = User.find_by(email: email)
+      @user.destroy
+    else
+      manage_account
+    end
+  elsif choice == "Back to Main Menu"
+    start_menu
+  end
+
+end
 
 
 # says goodbye to the user
