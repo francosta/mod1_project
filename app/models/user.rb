@@ -4,4 +4,10 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true
 
-end
+  def self.total_points(id)
+      holder = Question.all.select { |x| x.user_id == id}
+      holder.size
+  end
+
+
+  end
