@@ -127,7 +127,7 @@ end
     @user.name = new_name
     @user.save
     puts "Welcome, #{new_name}"
-    manage_account
+    start_menu
   # elsif choice == "Change my password"
   #   new_password = @prompt.ask("Please set a new password:")
   #   @user.password = new_password
