@@ -1,5 +1,7 @@
 require 'pry'
 
+
+
 #
 # u1 = User.create(name: "Nahit", email: "nahit@gmail.com")
 # u2 = User.create(name: "Fran", email: "fran@gmail.com")
