@@ -32,7 +32,9 @@ class CLI
 
     users_points = existing_users_questions.map {|user_questions| user_questions.length}
 
-    
+    binding.pry
+    table = TTY::Table[[existing_users_emails], [users_points]]
+    table.render(:basic)
 
   elsif choice == "Account Management"
     manage_account
@@ -105,6 +107,13 @@ end
   end
 
   def manage_account
+    email = @prompt.ask("What's your email?")
+    if @user = User.find_by(email: email)
+      @user = User.find_by(email: email)
+    else
+      puts "This account doesn't exist."
+      start_menu
+    end
 
     choice = @prompt.select("Please choose from the following options:") do |menu|
       menu.choice 'Change my name'
@@ -114,8 +123,6 @@ end
     end
 
   if choice == "Change my name"
-    email = @prompt.ask("What's your email?")
-    @user = User.find_by(email: email)
     new_name = @prompt.ask("What's your name?")
     @user.name = new_name
     @user.save
@@ -127,8 +134,6 @@ end
   #   puts "Your password has been changed."
   elsif choice == "Delete my account"
     if @prompt.yes?("Are you sure you want to delete your account. ALL YOUR POINTS AND PROGRESS WILL BE LOST!")
-      email = @prompt.ask("What's your email?")
-      @user = User.find_by(email: email)
       @user.destroy
     else
       manage_account
