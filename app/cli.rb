@@ -26,9 +26,8 @@ class CLI
     question = "#{category_instance[0].text} #{country}?"
     puts question
 
-    category_hash[0].values[0].delete(country)
-    # @user.reload
-  # end
+    @user.update_questions(category[0], country)
+    binding.pry
 
   # def get_answer
     response_string = RestClient.get("https://restcountries.eu/rest/v2/alpha/#{country_instance[0].code}")
