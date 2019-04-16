@@ -16,21 +16,27 @@ class CLI
 
   def formulate_question
 
+    category = @user.available_questions.sample.keys
+    category_instance = Category.all.select {|cat| cat.name == category[0]}
+    category_hash = @user.available_questions.select {|h| h.keys == category}
 
-    country = Country.all.sample
-    category = Category.all.sample
-    question = "#{category.text} #{country.name}?"
+    country = category_hash[0].values[0].sample
+    country_instance = Country.all.select {|cou| cou.name == country}
+
+    question = "#{category_instance[0].text} #{country}?"
     puts question
+
+    category_hash[0].values[0].delete(country)
+    # @user.reload
   # end
 
   # def get_answer
-
-    response_string = RestClient.get("https://restcountries.eu/rest/v2/alpha/#{country.code}")
+    response_string = RestClient.get("https://restcountries.eu/rest/v2/alpha/#{country_instance[0].code}")
     country_info = JSON.parse(response_string)
 
-    if category.name == "capital"
+    if category_instance[0].name == "capital"
       answer = country_info["capital"]
-    elsif category.name == "currency"
+    elsif category_instance[0].name == "currency"
       answer = country_info["currencies"][0]["name"]
     else
       answer = country_info["languages"][0]["name"]
@@ -42,7 +48,7 @@ class CLI
     guess = gets.chomp
     if guess == answer
       puts "Well done, your score has increased +1"
-      Question.create(user_id: @user.id, category_id: category.id, country_id: country.id)
+      Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
       puts "You now have #{@user.questions.reload.length} points."
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
