@@ -16,6 +16,7 @@ class CLI
 
   def formulate_question
 
+  # formulate question
     category = @user.available_questions.sample.keys
     category_instance = Category.all.select {|cat| cat.name == category[0]}
     category_hash = @user.available_questions.select {|h| h.keys == category}
@@ -23,13 +24,14 @@ class CLI
     country = category_hash[0].values[0].sample
     country_instance = Country.all.select {|cou| cou.name == country}
 
+  # pose question
     question = "#{category_instance[0].text} #{country}?"
     puts question
 
+  # update user questions
     @user.update_questions(category[0], country)
-    binding.pry
 
-  # def get_answer
+  # get correct answer
     response_string = RestClient.get("https://restcountries.eu/rest/v2/alpha/#{country_instance[0].code}")
     country_info = JSON.parse(response_string)
 
@@ -40,10 +42,8 @@ class CLI
     else
       answer = country_info["languages"][0]["name"]
     end
-  #
-  # end
-  #
-  # def answer_question
+
+  # get answer from user
     guess = gets.chomp
     if guess == answer
       puts "Well done, your score has increased +1"
@@ -51,18 +51,22 @@ class CLI
       puts "You now have #{@user.questions.reload.length} points."
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
-      # else
-      #   goodbye
+      else
+        goodbye
       end
     else
       puts "Unfortunately your answer was incorrect."
       puts "You have #{@user.questions.length} points."
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
-      # else
-      #   goodbye
+      else
+        goodbye
       end
     end
+  end
+
+  def goodbye
+    puts "Thanks for playing! See you soon!"
   end
 
   def run
