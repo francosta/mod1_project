@@ -4,6 +4,33 @@ class CLI
     @prompt = TTY::Prompt.new
   end
 
+  def start_menu
+    choice = @prompt.select("Welcome! Please choose from the following options:") do |menu|
+      menu.choice 'Play'
+      menu.choice 'Account Management'
+      menu.choice 'Check Scoreboard'
+      menu.choice "Exit"
+    end
+
+  if choice == "Exit"
+    goodbye
+  elsif choice == "Play"
+    say_greeting
+    find_or_create_user
+    welcome
+    formulate_question
+  elsif choice == "Check Scoreboard"
+    puts "Feature coming soon"
+  elsif choice == "Account Management"
+    puts "Feature coming soon"
+  end
+
+  end
+
+  def say_greeting
+    system 'say "Good Luck"'
+  end
+
   def find_or_create_user
     email = @prompt.ask("What's your email?")
     @user = User.find_or_create_by(email: email)
@@ -65,13 +92,45 @@ class CLI
     end
   end
 
+#   def manage_account
+#
+#     choice = @prompt.select("Please choose from the following options:") do |menu|
+#       menu.choice 'Change my name'
+#       menu.choice 'Change my password'
+#       menu.choice 'Delete my account'
+#       menu.choice "Back to Main Menu"
+#     end
+#
+#   if choice == "Change my name"
+#     new_name =
+#
+#     email = @prompt.ask("What's your email?")
+#     @user = User.find_or_create_by(email: email)
+#
+#   elsif choice == "Play"
+#     find_or_create_user
+#   elsif choice == "Check Scoreboard"
+#     puts "Feature coming soon"
+#   elsif choice == "Account Management"
+#     puts "Feature coming soon"
+#   end
+#
+# end
+
+
+# says goodbye to the user
   def goodbye
     puts "Thanks for playing! See you soon!"
   end
 
+  def display_splash_text
+    splash = Artii::Base.new :font => 'slant'
+    puts splash.asciify('Guessing Game')
+    splash
+  end
+
   def run
-    find_or_create_user
-    welcome
-    formulate_question
+    display_splash_text
+    start_menu
   end
 end

@@ -27,8 +27,7 @@ class User < ActiveRecord::Base
     category_hash = questions.select {|hash| hash.keys[0] == category}
 
     category_hash[0].values[0].delete(country)
-    self.available_questions = {}
-    self.available_questions = questions
+    self.update(available_questions: questions)
 
   end
 end
