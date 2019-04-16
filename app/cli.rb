@@ -20,12 +20,24 @@ class CLI
     welcome
     formulate_question
   elsif choice == "Check Scoreboard"
-    puts "Feature coming soon"
+
+    existing_users_ids = User.all.map {|user| if user.email != "!!!" then user.id end}.compact
+
+    existing_users_emails = User.all.map {|user| if user.email != "!!!" then user.email end}.compact
+
+    existing_users_questions =
+    existing_users_ids.map do |id|
+      Question.all.select {|question| question.user_id == id}
+    end
+
+    users_points = existing_users_questions.map {|user_questions| user_questions.length}
+
+    
+
   elsif choice == "Account Management"
     manage_account
   end
-
-  end
+end
 
   def say_greeting
     system 'say "Good Luck"'
