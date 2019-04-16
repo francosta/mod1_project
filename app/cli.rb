@@ -38,12 +38,13 @@ class CLI
   # def answer_question
     guess = gets.chomp
     if guess == answer
-      puts "you won"
+      puts "Well done, your score has increased +1"
       Question.create(user_id: @user.id, category_id: category.id, country_id: country.id)
     else
-      puts "you lost"
+      puts "Unfortunately your answer was incorrect."
     end
   end
+
 
   def run
     find_or_create_user
