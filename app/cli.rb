@@ -11,9 +11,16 @@ class CLI
 
   def welcome
     puts "Welcome, your score will be saved to #{@user.email}. Let's start playing!"
+    puts "You have #{@user.questions.length} points."
   end
 
   def formulate_question
+
+    available_questions = {}
+    Category.all.map do |category|
+      available_questions = {category.name => Country.all.map {|c| c.name}}
+    end
+
     country = Country.all.sample
     category = Category.all.sample
     question = "#{category.text} #{country.name}?"
@@ -40,11 +47,22 @@ class CLI
     if guess == answer
       puts "Well done, your score has increased +1"
       Question.create(user_id: @user.id, category_id: category.id, country_id: country.id)
+      puts "You now have #{@user.questions.reload.length} points."
+      if @prompt.yes?("Would you like to continue playing?")
+        formulate_question
+      # else
+      #   goodbye
+      end
     else
       puts "Unfortunately your answer was incorrect."
+      puts "You have #{@user.questions.length} points."
+      if @prompt.yes?("Would you like to continue playing?")
+        formulate_question
+      # else
+      #   goodbye
+      end
     end
   end
-
 
   def run
     find_or_create_user
