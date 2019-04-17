@@ -174,7 +174,7 @@ end
       end
     else
       puts "
-      Unfortunately your answer was incorrect."
+      Unfortunately your answer was incorrect. The correct answer was #{answer}"
       puts "
       You have #{@user.questions.length} points.
       "
