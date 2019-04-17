@@ -24,7 +24,7 @@ class CLI
 
     existing_users_ids = User.all.map {|user| if user.email != "!!!" then user.id end}.compact
 
-    existing_users_emails = User.all.map {|user| if user.email != "!!!" then user.email end}.compact
+    existing_users_names = User.all.map {|user| if user.email != "!!!" then user.name end}.compact
 
     existing_users_questions =
     existing_users_ids.map do |id|
@@ -32,6 +32,16 @@ class CLI
     end
 
     users_points = existing_users_questions.map {|user_questions| user_questions.length}
+    scoreboard = []
+    existing_users_names.each do |name|
+      array = []
+      array << name
+      array << users_points[existing_users_names.index(name)]
+      scoreboard << array
+    end
+
+    table = TTY::Table.new ['Player','Points'], scoreboard
+    puts table
 
   elsif choice == "Account Management"
     manage_account
@@ -89,7 +99,7 @@ end
         password = @prompt.mask("Please create a password:")
         password_reenter = @prompt.mask("Please confirm your password:")
         if password == password_reenter
-          @user = User.new(name: name, email: email, password: password)
+          @user = User.new(name: name.titleize.strip, email: email, password: password)
           @user.save
           sleep(2)
           puts ""
@@ -101,7 +111,7 @@ end
           password = @prompt.mask("Please reenter your password:".red)
           password_reenter = @prompt.mask("Please confirm your password:".red)
           if password == password_reenter
-            @user = User.new(name: name, email: email, password: password)
+            @user = User.new(name: name.titleize.strip, email: email, password: password)
             @user.save
             sleep(2)
             puts "
@@ -155,15 +165,15 @@ end
     country_info = JSON.parse(response_string)
 
     if category_instance[0].name == "capital"
-      answer = country_info["capital"].titleize
+      answer = country_info["capital"].downcase
     elsif category_instance[0].name == "currency"
-      answer = country_info["currencies"][0]["name"].titleize
+      answer = country_info["currencies"][0]["name"].downcase
     else
-      answer = country_info["languages"][0]["name"].titleize
+      answer = country_info["languages"][0]["name"].downcase
     end
 
   # get answer from user
-    guess = gets.chomp.titleize.strip
+    guess = gets.chomp.downcase.strip
     if guess == answer
       puts ""
       puts "Well done, your score has increased by 1 point.".blue
@@ -278,7 +288,7 @@ def create_account
   password = @prompt.mask("Please create a password:".green)
   password_reenter = @prompt.mask("Please confirm your password:".green)
   if password == password_reenter
-    @user = User.new(name: name, email: email, password: password)
+    @user = User.new(name: name.titleize.strip, email: email, password: password)
     @user.save
     sleep(2)
     puts ""
@@ -291,7 +301,7 @@ def create_account
     password = @prompt.mask("Please reenter your password:".red)
     password_reenter = @prompt.mask("Please confirm your password:")
     if password == password_reenter
-      @user = User.new(name: name, email: email, password: password)
+      @user = User.new(name: name.titleize.strip, email: email, password: password)
       @user.save
       sleep(2)
       puts ""
