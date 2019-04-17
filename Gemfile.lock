@@ -16,6 +16,7 @@ GEM
     artii (2.1.2)
     bcrypt (3.1.12)
     coderay (1.1.2)
+    colorize (0.8.1)
     concurrent-ruby (1.1.5)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
@@ -100,6 +101,7 @@ DEPENDENCIES
   activerecord
   artii
   bcrypt
+  colorize
   json
   pry
   rake

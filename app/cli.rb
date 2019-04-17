@@ -50,7 +50,7 @@ end
       puts ""
       password = @prompt.mask("Please insert your password:")
       if @user.authenticate(password)
-        puts "You've successfully logged in."
+        puts "You've successfully logged in.".green
         sleep (2)
         puts ""
         puts "Let's play!"
@@ -160,7 +160,7 @@ end
     guess = gets.chomp.titleize.strip
     if guess == answer
       puts ""
-      puts "Well done, your score has increased by 1 point."
+      puts "Well done, your score has increased by 1 point.".blue
       Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
       puts ""
       puts "You now have #{@user.questions.reload.length} points."
@@ -169,12 +169,12 @@ end
         formulate_question
       else
         puts ""
-        puts "Thanks for playing! See you soon!"
+        puts "Thanks for playing! See you soon!".yellow
         system exit
       end
     else
       puts "
-      Unfortunately your answer was incorrect. The correct answer was #{answer}"
+      Unfortunately your answer was incorrect. The correct answer was #{answer}".red
       puts "
       You have #{@user.questions.length} points.
       "
@@ -182,7 +182,7 @@ end
         formulate_question
       else
         puts ""
-        puts "Thanks for playing! See you soon!"
+        puts "Thanks for playing! See you soon!".yellow
         system exit
       end
     end
