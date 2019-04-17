@@ -85,7 +85,7 @@ end
     end
 
   # get answer from user
-    guess = gets.chomp
+    guess = gets.chomp.titleize
     if guess == answer
       puts "Well done, your score has increased +1"
       Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
