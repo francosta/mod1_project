@@ -32,10 +32,6 @@ class CLI
 
     users_points = existing_users_questions.map {|user_questions| user_questions.length}
 
-    binding.pry
-    table = TTY::Table[[existing_users_emails], [users_points]]
-    table.render(:basic)
-
   elsif choice == "Account Management"
     manage_account
   end
@@ -54,6 +50,9 @@ end
       puts ""
       password = @prompt.mask("Please insert your password:")
       if password == @user.password
+        puts "Let's play"
+        puts ""
+        sleep(2)
       else
         puts ""
         puts "This password is incorrect."
@@ -77,11 +76,17 @@ end
         "
         Let's create your account!
         "
+        name = @prompt.ask("What's your name?")
         email = @prompt.ask("What's your email?")
         password = @prompt.mask("Please create a password:")
         password_reenter = @prompt.mask("Please confirm your password:")
         if password == password_reenter
-          @user = User.create(email: email, password: password)
+          @user = User.create(name: name, email: email, password: password)
+          sleep(2)
+          puts ""
+          puts "Thanks for creating your account."
+          puts "Let's play!"
+          puts ""
         else
           puts "The passwords do not match."
           password = @prompt.mask("Please reenter your password:")
