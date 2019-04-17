@@ -29,6 +29,5 @@ class User < ActiveRecord::Base
 
     category_hash[0].values[0].delete(country)
     self.update(available_questions: questions)
-
   end
 end
