@@ -168,7 +168,9 @@ end
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
       else
-        goodbye
+        puts ""
+        puts "Thanks for playing! See you soon!"
+        system exit
       end
     else
       puts "
@@ -179,7 +181,9 @@ end
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
       else
-        goodbye
+        puts ""
+        puts "Thanks for playing! See you soon!"
+        system exit
       end
     end
   end
@@ -211,8 +215,15 @@ end
         end
       end
     else
-      puts "This account doesn't exist."
+      sleep(1)
+      puts ""
+      puts "We're sorry but we couldn't retrieve your account."
+      puts ""
+      if @prompt.yes?("Would you like to create a new account?")
+        create_account
+      else
       start_menu
+    end
     end
 
     choice = @prompt.select("Please choose from the following options:") do |menu|
@@ -248,6 +259,46 @@ end
   end
 
 end
+
+def create_account
+  "
+  Let's create your account!
+  "
+  name = @prompt.ask("What's your name?")
+  email = @prompt.ask("What's your email?")
+  password = @prompt.mask("Please create a password:")
+  password_reenter = @prompt.mask("Please confirm your password:")
+  if password == password_reenter
+    @user = User.new(name: name, email: email, password: password)
+    @user.save
+    sleep(2)
+    puts ""
+    puts "Thanks for creating your account."
+    puts ""
+    sleep(1)
+    start_menu
+  else
+    puts "The passwords do not match."
+    password = @prompt.mask("Please reenter your password:")
+    password_reenter = @prompt.mask("Please confirm your password:")
+    if password == password_reenter
+      @user = User.new(name: name, email: email, password: password)
+      @user.save
+      sleep(2)
+      puts ""
+      puts "Thanks for creating an account."
+      puts ""
+      sleep(1)
+      start_menu
+    else
+      puts ""
+      puts "The passwords do not match."
+      puts "Please try again later."
+      system exit
+    end
+  end
+end
+
 
 
 # says goodbye to the user
