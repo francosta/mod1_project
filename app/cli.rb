@@ -46,13 +46,65 @@ end
   end
 
   def find_or_create_user
+    puts "
+    Please login to your account.
+    "
     email = @prompt.ask("What's your email?")
-    @user = User.find_or_create_by(email: email)
+    if @user = User.find_by(email: email)
+      @user = User.find_by(email: email)
+      password = @prompt.ask("Please insert your password:")
+      if password == @user.password
+      else
+        puts "This password is incorrect.
+        "
+        password = @prompt.ask("Please reinsert your password:")
+        if password == @user.password
+          puts "Thanks for logging in.
+          "
+        else
+          puts "Sorry, this password is still incorrect.
+          Please go away and check your password!"
+          system exit
+        end
+      end
+    else
+      puts "It seems like you have never played!"
+      if @prompt.yes?("Would you like to create an account?")
+        "Let's create your account!"
+        email = @prompt.ask("What's your email?")
+        password = @prompt.ask("Please insert your password:")
+        password_reenter = @prompt.ask("Please confirm your password:")
+        if password == password_reenter
+          @user = User.create(email: email, password: password)
+        else
+          puts "The passwords do not match."
+          password = @prompt.ask("Please reenter your password:")
+          password_reenter = @prompt.ask("Please confirm your password:")
+          if password == password_reenter
+            @user = User.create(email: email, password: password)
+            sleep(2)
+            puts "Thanks for creating an account."
+          else
+            "The passwords do not match.
+            Please try again later."
+            system exit
+          end
+        end
+      else
+        puts "
+        Goodbye, then.
+        "
+        system exit
+      end
+    end
   end
 
   def welcome
-    puts "Welcome, your score will be saved to #{@user.email}. Let's start playing!"
-    puts "You have #{@user.questions.length} points."
+    puts "Welcome, your score will be saved to #{@user.email}. Let's start playing!
+    "
+    puts "You have #{@user.questions.length} points.
+    "
+    sleep(2)
   end
 
   def formulate_question
@@ -147,7 +199,7 @@ end
 
 # says goodbye to the user
   def goodbye
-    puts "Thanks for playing! See you soon!"
+    return "Thanks for playing! See you soon!"
   end
 
   def display_splash_text
