@@ -40,8 +40,13 @@ class CLI
       scoreboard << array
     end
 
+    scoreboard = scoreboard.sort_by {|element| element[1]}.reverse
+
     table = TTY::Table.new ['Player','Points'], scoreboard
-    puts table
+
+    puts table.render(:ascii)
+    sleep(2)
+    start_menu
 
   elsif choice == "Account Management"
     manage_account
