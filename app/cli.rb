@@ -185,11 +185,33 @@ end
   end
 
   def manage_account
+    sleep(1)
+    puts "Please login to your account"
+    puts ""
     email = @prompt.ask("What's your email?")
     if @user = User.find_by(email: email)
       @user = User.find_by(email: email)
+      password = @prompt.mask("Please insert your password:")
+      if @user.authenticate(password)
+        puts ""
+        puts "You've successfully logged in to your account."
+        puts ""
+        sleep(1)
+      else
+        puts "The password you entered is incorrect."
+        puts ""
+        sleep(1)
+        password = @prompt.mask("Please try to insert your password again:")
+        if @user.authenticate(password)
+        else
+          sleep(1)
+          puts "The password you entered is incorrect."
+          puts "Please return later."
+          system exit
+        end
+      end
     else
-      puts "This account doesn't exist. Please "
+      puts "This account doesn't exist."
       start_menu
     end
 
@@ -206,10 +228,15 @@ end
     @user.save
     puts "Welcome, #{new_name}"
     start_menu
-  # elsif choice == "Change my password"
-  #   new_password = @prompt.ask("Please set a new password:")
-  #   @user.password = new_password
-  #   puts "Your password has been changed."
+  elsif choice == "Change my password"
+    new_password = @prompt.mask("Please set a new password:")
+    new_password_reenter = @prompt.mask("Please reenter your new password:")
+    @user.password = new_password
+    @user.save
+    puts ""
+    puts "Your password has been successfully changed."
+    puts ""
+    start_menu
   elsif choice == "Delete my account"
     if @prompt.yes?("Are you sure you want to delete your account. ALL YOUR POINTS AND PROGRESS WILL BE LOST!")
       @user.destroy
