@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   after_initialize :available_questions
 
   validates :email, presence: true
-
+  validates :password, presence: true
 
   def self.total_points(id)
       holder = Question.all.select { |x| x.user_id == id}

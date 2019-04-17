@@ -46,47 +46,56 @@ end
   end
 
   def find_or_create_user
-    puts "
-    Please login to your account.
-    "
+    puts ""
+    puts "Please login to your account."
     email = @prompt.ask("What's your email?")
     if @user = User.find_by(email: email)
       @user = User.find_by(email: email)
-      password = @prompt.ask("Please insert your password:")
+      puts ""
+      password = @prompt.mask("Please insert your password:")
       if password == @user.password
       else
-        puts "This password is incorrect.
-        "
-        password = @prompt.ask("Please reinsert your password:")
+        puts ""
+        puts "This password is incorrect."
+        puts ""
+        password = @prompt.mask("Please reinsert your password:")
         if password == @user.password
           puts "Thanks for logging in.
           "
         else
-          puts "Sorry, this password is still incorrect.
-          Please go away and check your password!"
+          puts ""
+          puts "Sorry, this password is still incorrect."
+          puts "Please go away and check your password!"
+          puts ""
           system exit
         end
       end
     else
-      puts "It seems like you have never played!"
+      puts "It seems like you have never played!
+      "
       if @prompt.yes?("Would you like to create an account?")
-        "Let's create your account!"
+        "
+        Let's create your account!
+        "
         email = @prompt.ask("What's your email?")
-        password = @prompt.ask("Please insert your password:")
-        password_reenter = @prompt.ask("Please confirm your password:")
+        password = @prompt.mask("Please create a password:")
+        password_reenter = @prompt.mask("Please confirm your password:")
         if password == password_reenter
           @user = User.create(email: email, password: password)
         else
           puts "The passwords do not match."
-          password = @prompt.ask("Please reenter your password:")
-          password_reenter = @prompt.ask("Please confirm your password:")
+          password = @prompt.mask("Please reenter your password:")
+          password_reenter = @prompt.mask("Please confirm your password:")
           if password == password_reenter
             @user = User.create(email: email, password: password)
             sleep(2)
-            puts "Thanks for creating an account."
+            puts "
+            Thanks for creating an account."
           else
-            "The passwords do not match.
-            Please try again later."
+            "
+            The passwords do not match.
+            Please try again later.
+            "
             system exit
           end
         end
@@ -100,10 +109,10 @@ end
   end
 
   def welcome
-    puts "Welcome, your score will be saved to #{@user.email}. Let's start playing!
-    "
-    puts "You have #{@user.questions.length} points.
-    "
+    puts "
+    Welcome, your score will be saved to #{@user.email}. Let's start playing!"
+    puts "
+    You have #{@user.questions.length} points."
     sleep(2)
   end
 
@@ -139,17 +148,22 @@ end
   # get answer from user
     guess = gets.chomp.titleize.strip
     if guess == answer
-      puts "Well done, your score has increased +1"
+      puts "
+      Well done, your score has increased +1"
       Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
-      puts "You now have #{@user.questions.reload.length} points."
+      puts "
+      You now have #{@user.questions.reload.length} points."
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
       else
         goodbye
       end
     else
-      puts "Unfortunately your answer was incorrect."
-      puts "You have #{@user.questions.length} points."
+      puts "
+      Unfortunately your answer was incorrect."
+      puts "
+      You have #{@user.questions.length} points.
+      "
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
       else
@@ -163,7 +177,7 @@ end
     if @user = User.find_by(email: email)
       @user = User.find_by(email: email)
     else
-      puts "This account doesn't exist."
+      puts "This account doesn't exist. Please "
       start_menu
     end
 
