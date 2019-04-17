@@ -4,6 +4,7 @@ class CLI
     @prompt = TTY::Prompt.new
   end
 
+# Displays the start menu
   def start_menu
     choice = @prompt.select("Welcome! Please choose from the following options:") do |menu|
       menu.choice 'Play'
@@ -37,10 +38,12 @@ class CLI
   end
 end
 
+# Plays a audio greeting
   def say_greeting
     system 'say "Good Luck"'
   end
 
+# Retrieves user account through login or creates a new one
   def find_or_create_user
     puts ""
     puts "Please login to your account."
@@ -112,14 +115,15 @@ end
           end
         end
       else
-        puts "
-        Goodbye, then.
-        "
+        puts ""
+        puts "Goodbye, then."
+        puts ""
         system exit
       end
     end
   end
 
+# Welcomes a user before starting a game session.
   def welcome
     puts "Welcome, your score will be saved to #{@user.email}."
     puts ""
@@ -127,6 +131,7 @@ end
     sleep(2)
   end
 
+# Creates a question from the database and initiates a game round
   def formulate_question
 
   # formulate question
@@ -188,6 +193,7 @@ end
     end
   end
 
+# Logs user in and shows Account Management menu.
   def manage_account
     sleep(1)
     puts "Please login to your account"
@@ -260,6 +266,8 @@ end
 
 end
 
+# Creates a new user account.
+
 def create_account
   "
   Let's create your account!
@@ -299,12 +307,12 @@ def create_account
   end
 end
 
-
-
-# says goodbye to the user
+# Says goodbye to the user
   def goodbye
     return "Thanks for playing! See you soon!"
   end
+
+# Displays game name in splash text
 
   def display_splash_text
     splash = Artii::Base.new :font => 'slant'
@@ -312,6 +320,7 @@ end
     splash
   end
 
+# Runner method.
   def run
     display_splash_text
     start_menu
