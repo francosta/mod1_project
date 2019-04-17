@@ -53,7 +53,7 @@ end
       puts ""
       password = @prompt.mask("Please insert your password:".green)
       if @user.authenticate(password)
-        puts "Welocme back {@user.name}.".green
+        puts "Welcome back #{@user.name}.".green
         sleep (2)
         puts ""
         puts "Let's play!"
@@ -64,7 +64,7 @@ end
         puts ""
         password = @prompt.mask("Please reinsert your password:".red)
         if @user.authenticate(password)
-          puts "You've successfully logged in.".green
+          puts "Welcome back #{@user.name}.".green
           sleep (1)
           puts ""
           puts "Let's play!".yellow
@@ -144,9 +144,8 @@ end
 
   # pose question
     question = "#{category_instance[0].text} #{country}?"
-    puts ""
-    puts "Category: #{category[0].capitalize}"
-    puts "Question: #{question}"
+    puts "Category: ".blue + "#{category[0].capitalize}"
+    puts "Question: ".blue + "#{question}"
 
   # update user questions
     @user.update_questions(category[0], country)
@@ -318,7 +317,7 @@ end
 
   def display_splash_text
     splash = Artii::Base.new :font => 'slant'
-    puts splash.asciify('Guessing Game').blue
+    puts splash.asciify('Country Trivia').blue
     splash
   end
 
