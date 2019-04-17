@@ -49,18 +49,23 @@ end
       @user = User.find_by(email: email)
       puts ""
       password = @prompt.mask("Please insert your password:")
-      if password == @user.password
-        puts "Let's play"
+      if @user.authenticate(password)
+        puts "You've successfully logged in."
+        sleep (2)
         puts ""
+        puts "Let's play!"
         sleep(2)
       else
         puts ""
         puts "This password is incorrect."
         puts ""
         password = @prompt.mask("Please reinsert your password:")
-        if password == @user.password
-          puts "Thanks for logging in.
-          "
+        if @user.authenticate(password)
+          puts "You've successfully logged in."
+          sleep (1)
+          puts ""
+          puts "Let's play!"
+          sleep(1)
         else
           puts ""
           puts "Sorry, this password is still incorrect."
@@ -81,7 +86,8 @@ end
         password = @prompt.mask("Please create a password:")
         password_reenter = @prompt.mask("Please confirm your password:")
         if password == password_reenter
-          @user = User.create(name: name, email: email, password: password)
+          @user = User.new(name: name, email: email, password: password)
+          @user.save
           sleep(2)
           puts ""
           puts "Thanks for creating your account."
@@ -92,7 +98,8 @@ end
           password = @prompt.mask("Please reenter your password:")
           password_reenter = @prompt.mask("Please confirm your password:")
           if password == password_reenter
-            @user = User.create(email: email, password: password)
+            @user = User.new(name: name, email: email, password: password)
+            @user.save
             sleep(2)
             puts "
             Thanks for creating an account."
@@ -114,10 +121,9 @@ end
   end
 
   def welcome
-    puts "
-    Welcome, your score will be saved to #{@user.email}. Let's start playing!"
-    puts "
-    You have #{@user.questions.length} points."
+    puts "Welcome, your score will be saved to #{@user.email}."
+    puts ""
+    puts "You have #{@user.questions.length} points."
     sleep(2)
   end
 
@@ -153,11 +159,12 @@ end
   # get answer from user
     guess = gets.chomp.titleize.strip
     if guess == answer
-      puts "
-      Well done, your score has increased +1"
+      puts ""
+      puts "Well done, your score has increased by 1 point."
       Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
-      puts "
-      You now have #{@user.questions.reload.length} points."
+      puts ""
+      puts "You now have #{@user.questions.reload.length} points."
+      puts ""
       if @prompt.yes?("Would you like to continue playing?")
         formulate_question
       else

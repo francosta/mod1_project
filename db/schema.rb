@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_084016) do
     t.string "name"
     t.string "email"
     t.text "available_questions"
-    t.string "password"
+    t.string "password_digest"
   end
 
 end

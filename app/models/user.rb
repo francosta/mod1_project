@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true
   validates :password, presence: true
+  has_secure_password
 
   def self.total_points(id)
       holder = Question.all.select { |x| x.user_id == id}
