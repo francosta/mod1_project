@@ -53,7 +53,7 @@ end
       puts ""
       password = @prompt.mask("Please insert your password:".green)
       if @user.authenticate(password)
-        puts "You've successfully logged in.".green
+        puts "Welocme back {@user.name}.".green
         sleep (2)
         puts ""
         puts "Let's play!"
@@ -144,7 +144,9 @@ end
 
   # pose question
     question = "#{category_instance[0].text} #{country}?"
-    puts question
+    puts ""
+    puts "Category: #{category[0].capitalize}"
+    puts "Question: #{question}"
 
   # update user questions
     @user.update_questions(category[0], country)
@@ -174,12 +176,12 @@ end
         formulate_question
       else
         puts ""
-        puts "Thanks for playing! See you soon!".yellow
-        system exit
+        puts "Thanks for playing!".yellow
+        start_menu
       end
     else
       puts "
-      Unfortunately your answer was incorrect. The correct answer was #{answer}".red
+      Unfortunately your answer was incorrect. The correct answer was #{answer}.".red
       puts "
       You have #{@user.questions.length} points.
       "
@@ -187,8 +189,8 @@ end
         formulate_question
       else
         puts ""
-        puts "Thanks for playing! See you soon!".yellow
-        system exit
+        puts "Thanks for playing!".yellow
+        start_menu
       end
     end
   end
