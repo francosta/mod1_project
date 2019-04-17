@@ -77,15 +77,15 @@ end
     country_info = JSON.parse(response_string)
 
     if category_instance[0].name == "capital"
-      answer = country_info["capital"]
+      answer = country_info["capital"].titleize
     elsif category_instance[0].name == "currency"
-      answer = country_info["currencies"][0]["name"]
+      answer = country_info["currencies"][0]["name"].titleize
     else
-      answer = country_info["languages"][0]["name"]
+      answer = country_info["languages"][0]["name"].titleize
     end
 
   # get answer from user
-    guess = gets.chomp.titleize
+    guess = gets.chomp.titleize.strip
     if guess == answer
       puts "Well done, your score has increased +1"
       Question.create(user_id: @user.id, category_id: category_instance[0].id, country_id: country_instance[0].id)
