@@ -51,7 +51,7 @@ end
     if @user = User.find_by(email: email)
       @user = User.find_by(email: email)
       puts ""
-      password = @prompt.mask("Please insert your password:")
+      password = @prompt.mask("Please insert your password:".green)
       if @user.authenticate(password)
         puts "You've successfully logged in.".green
         sleep (2)
@@ -60,18 +60,18 @@ end
         sleep(2)
       else
         puts ""
-        puts "This password is incorrect."
+        puts "This password is incorrect.".red
         puts ""
-        password = @prompt.mask("Please reinsert your password:")
+        password = @prompt.mask("Please reinsert your password:".red)
         if @user.authenticate(password)
-          puts "You've successfully logged in."
+          puts "You've successfully logged in.".green
           sleep (1)
           puts ""
-          puts "Let's play!"
+          puts "Let's play!".yellow
           sleep(1)
         else
           puts ""
-          puts "Sorry, this password is still incorrect."
+          puts "Sorry, this password is still incorrect.".red
           puts "Please go away and check your password!"
           puts ""
           system exit
@@ -79,11 +79,11 @@ end
       end
     else
       puts "It seems like you have never played!
-      "
+      ".yellow
       if @prompt.yes?("Would you like to create an account?")
         "
         Let's create your account!
-        "
+        ".green
         name = @prompt.ask("What's your name?")
         email = @prompt.ask("What's your email?")
         password = @prompt.mask("Please create a password:")
@@ -93,30 +93,30 @@ end
           @user.save
           sleep(2)
           puts ""
-          puts "Thanks for creating your account."
-          puts "Let's play!"
+          puts "Thanks for creating your account.".green
+          puts "Let's play!".yellow
           puts ""
         else
-          puts "The passwords do not match."
-          password = @prompt.mask("Please reenter your password:")
-          password_reenter = @prompt.mask("Please confirm your password:")
+          puts "The passwords do not match.".red
+          password = @prompt.mask("Please reenter your password:".red)
+          password_reenter = @prompt.mask("Please confirm your password:".red)
           if password == password_reenter
             @user = User.new(name: name, email: email, password: password)
             @user.save
             sleep(2)
             puts "
-            Thanks for creating an account."
+            Thanks for creating an account.".green
           else
             "
             The passwords do not match.
             Please try again later.
-            "
+            ".red
             system exit
           end
         end
       else
         puts ""
-        puts "Goodbye, then."
+        puts "Goodbye, then.".blue
         puts ""
         system exit
       end
@@ -125,7 +125,7 @@ end
 
 # Welcomes a user before starting a game session.
   def welcome
-    puts "Welcome, your score will be saved to #{@user.email}."
+    puts "Welcome, your score will be saved to #{@user.email}.".yellow
     puts ""
     puts "You have #{@user.questions.length} points."
     sleep(2)
@@ -170,7 +170,7 @@ end
       puts ""
       puts "You now have #{@user.questions.reload.length} points."
       puts ""
-      if @prompt.yes?("Would you like to continue playing?")
+      if @prompt.yes?("Would you like to continue playing?".blue)
         formulate_question
       else
         puts ""
@@ -183,7 +183,7 @@ end
       puts "
       You have #{@user.questions.length} points.
       "
-      if @prompt.yes?("Would you like to continue playing?")
+      if @prompt.yes?("Would you like to continue playing?".blue)
         formulate_question
       else
         puts ""
@@ -196,7 +196,7 @@ end
 # Logs user in and shows Account Management menu.
   def manage_account
     sleep(1)
-    puts "Please login to your account"
+    puts "Please login to your account".green
     puts ""
     email = @prompt.ask("What's your email?")
     if @user = User.find_by(email: email)
@@ -204,28 +204,28 @@ end
       password = @prompt.mask("Please insert your password:")
       if @user.authenticate(password)
         puts ""
-        puts "You've successfully logged in to your account."
+        puts "You've successfully logged in to your account.".green
         puts ""
         sleep(1)
       else
-        puts "The password you entered is incorrect."
+        puts "The password you entered is incorrect.".red
         puts ""
         sleep(1)
-        password = @prompt.mask("Please try to insert your password again:")
+        password = @prompt.mask("Please try to insert your password again:".red)
         if @user.authenticate(password)
         else
           sleep(1)
-          puts "The password you entered is incorrect."
-          puts "Please return later."
+          puts "The password you entered is incorrect.".red
+          puts "Please return later.".red
           system exit
         end
       end
     else
       sleep(1)
       puts ""
-      puts "We're sorry but we couldn't retrieve your account."
+      puts "We're sorry but we couldn't retrieve your account.".red
       puts ""
-      if @prompt.yes?("Would you like to create a new account?")
+      if @prompt.yes?("Would you like to create a new account?".green)
         create_account
       else
       start_menu
@@ -246,16 +246,16 @@ end
     puts "Welcome, #{new_name}"
     start_menu
   elsif choice == "Change my password"
-    new_password = @prompt.mask("Please set a new password:")
-    new_password_reenter = @prompt.mask("Please reenter your new password:")
+    new_password = @prompt.mask("Please set a new password:".green)
+    new_password_reenter = @prompt.mask("Please reenter your new password:".green)
     @user.password = new_password
     @user.save
     puts ""
-    puts "Your password has been successfully changed."
+    puts "Your password has been successfully changed.".green
     puts ""
     start_menu
-  elsif choice == "Delete my account"
-    if @prompt.yes?("Are you sure you want to delete your account. ALL YOUR POINTS AND PROGRESS WILL BE LOST!")
+  elsif choice == "Delete my account".blue
+    if @prompt.yes?("Are you sure you want to delete your account. ALL YOUR POINTS AND PROGRESS WILL BE LOST!".red)
       @user.destroy
     else
       manage_account
@@ -274,34 +274,34 @@ def create_account
   "
   name = @prompt.ask("What's your name?")
   email = @prompt.ask("What's your email?")
-  password = @prompt.mask("Please create a password:")
-  password_reenter = @prompt.mask("Please confirm your password:")
+  password = @prompt.mask("Please create a password:".green)
+  password_reenter = @prompt.mask("Please confirm your password:".green)
   if password == password_reenter
     @user = User.new(name: name, email: email, password: password)
     @user.save
     sleep(2)
     puts ""
-    puts "Thanks for creating your account."
+    puts "Thanks for creating your account.".blue
     puts ""
     sleep(1)
     start_menu
   else
-    puts "The passwords do not match."
-    password = @prompt.mask("Please reenter your password:")
+    puts "The passwords do not match.".red
+    password = @prompt.mask("Please reenter your password:".red)
     password_reenter = @prompt.mask("Please confirm your password:")
     if password == password_reenter
       @user = User.new(name: name, email: email, password: password)
       @user.save
       sleep(2)
       puts ""
-      puts "Thanks for creating an account."
+      puts "Thanks for creating an account.".blue
       puts ""
       sleep(1)
       start_menu
     else
       puts ""
-      puts "The passwords do not match."
-      puts "Please try again later."
+      puts "The passwords do not match.".red
+      puts "Please try again later.".red
       system exit
     end
   end
@@ -309,14 +309,14 @@ end
 
 # Says goodbye to the user
   def goodbye
-    return "Thanks for playing! See you soon!"
+    return "Thanks for playing! See you soon!".yellow
   end
 
 # Displays game name in splash text
 
   def display_splash_text
     splash = Artii::Base.new :font => 'slant'
-    puts splash.asciify('Guessing Game')
+    puts splash.asciify('Guessing Game').blue
     splash
   end
 
