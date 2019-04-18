@@ -101,8 +101,10 @@ end
 
     puts ""
     if @user
-      user_position  =  scoreboard.map {|user| if user[0] == @user.name then user.index + 1 end}
-      puts "You are no. #{user_position} in the overall score of Country Trivia!"
+      user_array = scoreboard.map {|user| if user[0] == @user.name then user end}.compact[0]
+      user_position = scoreboard.index(user_array) + 1
+      puts ""
+      puts "You are no. #{user_position} in the overall score of Country Trivia!".blue
       puts ""
       puts table.render(:ascii)
       sleep(2)
@@ -158,11 +160,14 @@ end
     country_info = JSON.parse(response_string)
 
     if @category_instance[0].name == "capital"
-      answer = country_info["capital"].downcase
+      @answer = country_info["capital"].downcase
+      @correct_answer = country_info["capital"].downcase
     elsif @category_instance[0].name == "currency"
       @answer = country_info["currencies"][0]["name"].downcase
+      @correct_answer = country_info["currencies"][0]["name"].downcase
     else
       @answer = country_info["languages"][0]["name"].downcase
+      @correct_answer = country_info["languages"][0]["name"].downcase
     end
     get_user_answer
   end
@@ -180,7 +185,7 @@ end
       continue_play?
     else
       puts ""
-      puts "Unfortunately your answer was incorrect. The correct answer was #{if @answer == nil then "" else @answer.titleize end}.".red
+      puts "Unfortunately your answer was incorrect. The correct answer was #{if @answer == nil then "" else @correct_answer.titleize end}.".red
       puts ""
       puts "You have #{@user.questions.length} points."
       puts ""
