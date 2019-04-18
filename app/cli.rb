@@ -340,7 +340,7 @@ end
 
 # Sound method using afplay
   def play_sound
-    system 'afplay /Users/Nahit/Desktop/mod1/mod1_project/app/sounds/test_sound.mp3 &'
+    system 'afplay ./app/sounds/test_sound.mp3 &'
   end
 
 
