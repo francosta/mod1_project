@@ -102,7 +102,6 @@ end
     puts ""
     if @user
       user_position  =  scoreboard.map {|user| if user[0] == @user.name then user.index + 1 end}
-      binding.pry
       puts "You are no. #{user_position} in the overall score of Country Trivia!"
       puts ""
       puts table.render(:ascii)
