@@ -98,9 +98,22 @@ end
     end
     scoreboard = scoreboard.sort_by {|element| element[1]}.reverse
     table = TTY::Table.new ['Player','Points'], scoreboard
-    puts table.render(:ascii)
-    sleep(2)
-    start_menu
+
+    puts ""
+    if @user
+      user_position  =  scoreboard.map {|user| if user[0] == @user.name then user.index + 1 end}
+      binding.pry
+      puts "You are no. #{user_position} in the overall score of Country Trivia!"
+      puts ""
+      puts table.render(:ascii)
+      sleep(2)
+      start_menu
+    else
+      puts ""
+      puts table.render(:ascii)
+      sleep(2)
+      start_menu
+    end
   end
 
   def play
