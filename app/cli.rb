@@ -27,6 +27,7 @@ class CLI
   elsif choice == "Check Scoreboard"
     scoreboard
   elsif choice == "Exit"
+    system 'killall afplay'
     goodbye
   end
 end
@@ -326,6 +327,7 @@ end
 # Says goodbye to the user
   def goodbye
     return "Thanks for playing! See you soon!".yellow
+    system exit
   end
 
 # Displays game name in splash text
@@ -336,10 +338,17 @@ end
     splash
   end
 
-# Runner method.
-  def run
-    display_splash_text
-    start_menu
+# Sound method using afplay
+  def play_sound
+    system 'afplay /Users/Nahit/Desktop/mod1/mod1_project/app/sounds/test_sound.mp3 &'
   end
+
+
+# Runner method.
+def run
+  display_splash_text
+  play_sound
+  start_menu
+end
 
 end
