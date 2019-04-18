@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def update_questions(category, country)
+  def update_questions(category, country, password)
     questions =
     Category.all.map do |category|
       available_questions = {category.name => Country.all.map {|c| c.name}}
@@ -28,6 +28,6 @@ class User < ActiveRecord::Base
     category_hash = questions.select {|hash| hash.keys[0] == category}
 
     category_hash[0].values[0].delete(country)
-    self.update(available_questions: questions)
+    self.update(available_questions: questions, password: password)
   end
 end

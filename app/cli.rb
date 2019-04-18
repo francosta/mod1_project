@@ -2,6 +2,7 @@ class CLI
 
   def initialize
     @prompt = TTY::Prompt.new
+    @password = nil
     display_splash_text
   end
 
@@ -40,6 +41,7 @@ def login
     puts ""
     password = @prompt.mask("Please insert your password:".green)
     if @user.authenticate(password)
+      @password = password
       puts ""
       puts "Welcome back #{@user.name}.".green
       puts ""
@@ -133,11 +135,11 @@ end
     puts "Question: ".blue + "#{@question}"
     puts ""
     update_user_questions
+    get_correct_answer
   end
 
   def update_user_questions
-    @user.update_questions(@category[0], @country)
-    get_correct_answer
+    @user.update_questions(@category[0], @country, @password)
   end
 
   def get_correct_answer
@@ -163,13 +165,15 @@ end
       puts ""
       puts "You now have #{@user.questions.reload.length} points."
       puts ""
+      update_user_questions
       continue_play?
     else
       puts ""
-      puts "Unfortunately your answer was incorrect. The correct answer was #{@answer.titleize}.".red
+      puts "Unfortunately your answer was incorrect. The correct answer was #{if @answer == nil then "" else @answer.titleize end}.".red
       puts ""
       puts "You have #{@user.questions.length} points."
       puts ""
+      update_user_questions
       continue_play?
     end
   end
@@ -217,8 +221,8 @@ end
 
 def change_name
   new_name = @prompt.ask("What's your name?")
-  @user.name = new_name
-  @user.save
+  @user.update(name: new_name, password: @password)
+  # @user.save
   puts ""
   puts "Your name was changed to #{new_name}."
   puts ""
