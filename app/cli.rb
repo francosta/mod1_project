@@ -3,7 +3,6 @@ class CLI
   def initialize
     @prompt = TTY::Prompt.new
     @password = nil
-    display_splash_text
   end
 
 # Displays the start menu
