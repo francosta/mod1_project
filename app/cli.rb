@@ -203,7 +203,7 @@ def manage_account_menu
   choice = @prompt.select("Please choose from the following options:") do |menu|
     menu.choice 'Change my name'
     menu.choice 'Change my password'
-    menu.choice 'Delete my account'
+    menu.choice 'Delete my account'.blue
     menu.choice "Back to Main Menu"
   end
 
